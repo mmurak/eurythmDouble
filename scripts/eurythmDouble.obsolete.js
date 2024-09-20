@@ -94,7 +94,7 @@ class GlobalManager {
 		]);
 
 		// Common definitions
-		this.wavesurferHeight = 140;
+		this.wavesurferHeight = 150;
 	}
 }
 const G = new GlobalManager();
@@ -175,7 +175,7 @@ G.rightArrowButton.addEventListener("click", rightButtonClick);
 G.zoomIn.addEventListener("click", (evt) => { processZoomIn(evt); });
 function processZoomIn(evt) {
 	G.zoomOut.disabled = false;
-	if (evt.ctrlKey) {
+	if (evt.shiftKey) {
 		G.currentZoomFactor = G.storedZoomFactor;
 	} else {
 		G.currentZoomFactor += G.zoomDelta;
@@ -188,7 +188,7 @@ function processZoomIn(evt) {
 G.zoomOut.addEventListener("click", (evt) => { processZoomOut(evt); });
 function processZoomOut(evt) {
 	if (G.currentZoomFactor > G.minimumZoomFactor) {
-		if (evt.ctrlKey) {
+		if (evt.shiftKey) {
 			G.storedZoomFactor = G.currentZoomFactor;
 			G.currentZoomFactor = G.minimumZoomFactor;
 		} else {
@@ -271,14 +271,13 @@ function playPauseControl() {
 }
 
 function repeatablePlayStart() {
-	if (G.wavePlayer == null)  return;
 	G.inHoldPlay = true;
 	G.startPointStorage = G.wavePlayer.getCurrentTime();
 	G.wavePlayer.play();
 }
 
 function repeatablePlayEnd() {
-	if ((G.inHoldPlay == false) || (G.wavePlayer == null))return;
+	if (G.inHoldPlay == false) return;
 	G.wavePlayer.pause();
 	G.wavePlayer.setTime(G.startPointStorage);
 	G.inHoldPlay = false;
@@ -383,7 +382,7 @@ G.rightArrowButtonB.addEventListener("click", rightButtonClickB);
 G.zoomInB.addEventListener("click", (evt) => { processZoomInB(evt); });
 function processZoomInB(evt) {
 	G.zoomOutB.disabled = false;
-	if (evt.ctrlKey) {
+	if (evt.shiftKey) {
 		G.currentZoomFactorB = G.storedZoomFactorB;
 	} else {
 		G.currentZoomFactorB += G.zoomDeltaB;
@@ -396,7 +395,7 @@ function processZoomInB(evt) {
 G.zoomOutB.addEventListener("click", (evt) => { processZoomOutB(evt); });
 function processZoomOutB(evt) {
 	if (G.currentZoomFactorB > G.minimumZoomFactorB) {
-		if (evt.ctrlKey) {
+		if (evt.shiftKey) {
 			G.storedZoomFactorB = G.currentZoomFactorB;
 			G.currentZoomFactorB = G.minimumZoomFactorB;
 		} else {
@@ -479,14 +478,13 @@ function playPauseControlB() {
 }
 
 function repeatablePlayStartB() {
-	if (G.wavePlayerB == null)  return;
 	G.inHoldPlayB = true;
 	G.startPointStorageB = G.wavePlayerB.getCurrentTime();
 	G.wavePlayerB.play();
 }
 
 function repeatablePlayEndB() {
-	if ((G.inHoldPlayB == false) || (G.wavePlayerB == null))  return;
+	if (G.inHoldPlayB == false) return;
 	G.wavePlayerB.pause();
 	G.wavePlayerB.setTime(G.startPointStorageB);
 	G.inHoldPlayB = false;
@@ -516,73 +514,31 @@ function updateProgressFromSecB(time) {
 }
 
 //-------------------- Common logics --------------------
-document.addEventListener("keyup", (evt) => {
-	if (G.inHoldPlay) {
-		repeatablePlayEnd();
-	}
-	if (G.inHoldPlayB) {
-		repeatablePlayEndB();
-	}
-});
 
 document.addEventListener("keydown", (evt) => {
-	if ((G.playPause.disabled) && (G.playPauseB.disabled))  return;
+	if (G.playPause.disabled)  return;
 	if (evt.key == " ") {
-		if (evt.shiftKey) {
-			playPauseControlB();
-		} else {
-			playPauseControl();
-		}
+		playPauseControl();
 		evt.preventDefault();
-	} else if (evt.metaKey) {
-		if (evt.shiftKey) {
-			repeatablePlayStartB();
-		} else {
-			repeatablePlayStart();
-		}
 	} else if (evt.key == "ArrowLeft") {
-		if (evt.shiftKey) {
-			leftButtonClickB();
-		} else {
-			leftButtonClick();
-		}
+		leftButtonClick();
 	} else if (evt.key == "ArrowRight") {
-		if (evt.shiftKey) {
-			rightButtonClickB();
-		} else {
-			rightButtonClick();
-		}
+		rightButtonClick();
 	} else if ((evt.key >= "1") && (evt.key <= 9)) {
 		let delta = (evt.ctrlKey) ? Number(evt.key) : -Number(evt.key);
 		G.wavePlayer.setTime(G.wavePlayer.getCurrentTime() + delta);
 	} else if (evt.key == "ArrowUp") {
-		if (evt.shiftKey) {
-			G.speedValB.value = Number(G.speedValB.value) + 0.05;
-			_changePlaySpeedB();
-		} else {
-			G.speedVal.value = Number(G.speedVal.value) + 0.05;
-			_changePlaySpeed();
-		}
+		G.speedVal.value = Number(G.speedVal.value) + 0.05;
+		_changePlaySpeed();
 	} else if (evt.key == "ArrowDown") {
-		if (evt.shiftKey) {
-			G.speedValB.value = Number(G.speedValB.value) - 0.05;
-			_changePlaySpeedB();
-		} else {
-			G.speedVal.value = Number(G.speedVal.value) - 0.05;
-			_changePlaySpeed();
-		}
-	} else if (evt.key == "d") {
+		G.speedVal.value = Number(G.speedVal.value) - 0.05;
+		_changePlaySpeed();
+	} else if ((evt.key == "d") || (evt.key == "D")) {
 		resetPlaySpeed();
-	} else if (evt.key == "D") {
-		resetPlaySpeedB();
-	} else if (evt.key == "i") {
+	} else if ((evt.key == "i") || (evt.key == "I")) {
 		processZoomIn(evt);
-	} else if (evt.key == "I") {
-		processZoomInB(evt);
-	} else if (evt.key == "o") {
+	} else if ((evt.key == "o") || (evt.key == "O")) {
 		processZoomOut(evt);
-	} else if (evt.key == "O") {
-		processZoomOutB(evt);
 	}
 });
 

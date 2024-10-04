@@ -94,7 +94,7 @@ class GlobalManager {
 		]);
 
 		// Common definitions
-		this.wavesurferHeight = 140;
+		this.wavesurferHeight = 100;
 	}
 }
 const G = new GlobalManager();
@@ -363,6 +363,7 @@ G.defaultSpeedB.addEventListener("click", resetPlaySpeedB);
 // Change play speed
 G.speedValB.addEventListener("input", _changePlaySpeedB);
 function _changePlaySpeedB() {
+	if (G.wavePlayerB == null)  return;
 	const sp = Number(G.speedValB.value).toFixed(2);
 	G.speedDigitsB.innerHTML = sp;
 	if (sp != 1) {
@@ -382,6 +383,7 @@ G.rightArrowButtonB.addEventListener("click", rightButtonClickB);
 
 G.zoomInB.addEventListener("click", (evt) => { processZoomInB(evt); });
 function processZoomInB(evt) {
+	if (G.wavePlayerB == null)  return;
 	G.zoomOutB.disabled = false;
 	if (evt.ctrlKey) {
 		G.currentZoomFactorB = G.storedZoomFactorB;
@@ -395,6 +397,7 @@ function processZoomInB(evt) {
 
 G.zoomOutB.addEventListener("click", (evt) => { processZoomOutB(evt); });
 function processZoomOutB(evt) {
+	if (G.wavePlayerB == null)  return;
 	if (G.currentZoomFactorB > G.minimumZoomFactorB) {
 		if (evt.ctrlKey) {
 			G.storedZoomFactorB = G.currentZoomFactorB;
@@ -471,6 +474,7 @@ function pauseCBB() {
 }
 
 function playPauseControlB() {
+	if (G.wavePlayerB == null)  return;
 	if (G.wavePlayerB.isPlaying()) {
 		G.wavePlayerB.pause();
 	} else {
@@ -493,6 +497,7 @@ function repeatablePlayEndB() {
 }
 
 function resetPlaySpeedB() {
+	if (G.wavePlayerB == null)  return;
 	if (G.speedValB.value == 1.0) {
 		G.speedValB.value = G.speedStorageB;
 		G.defaultSpeedB.value = G.defaultSpeedLabel;
@@ -504,10 +509,12 @@ function resetPlaySpeedB() {
 }
 
 function leftButtonClickB() {
+	if (G.wavePlayerB == null)  return;
 	G.wavePlayerB.setTime(G.wavePlayerB.getCurrentTime() - Number(G.jumpSelectorB.value));
 }
 
 function rightButtonClickB() {
+	if (G.wavePlayerB == null)  return;
 	G.wavePlayerB.setTime(G.wavePlayerB.getCurrentTime() + Number(G.jumpSelectorB.value));
 }
 
@@ -557,6 +564,7 @@ document.addEventListener("keydown", (evt) => {
 		G.wavePlayer.setTime(G.wavePlayer.getCurrentTime() + delta);
 	} else if (evt.key == "ArrowUp") {
 		if (evt.shiftKey) {
+			if (G.wavePlayerB == null)  return;
 			G.speedValB.value = Number(G.speedValB.value) + 0.05;
 			_changePlaySpeedB();
 		} else {
@@ -565,6 +573,7 @@ document.addEventListener("keydown", (evt) => {
 		}
 	} else if (evt.key == "ArrowDown") {
 		if (evt.shiftKey) {
+			if (G.wavePlayerB == null)  return;
 			G.speedValB.value = Number(G.speedValB.value) - 0.05;
 			_changePlaySpeedB();
 		} else {

@@ -9,7 +9,7 @@ body{
 }
 #PlayPause,#PlayPauseB{
 	width: 60%;
-	height: 60px;
+	height: 40px;
 	background-color: #000088;
 	font-size: 18pt;
 	color: white;
@@ -24,7 +24,7 @@ body{
 }
 #RepeatablePlay,#RepeatablePlayB{
 	width: 35%;
-	height: 60px;
+	height: 40px;
 	background-color: #006400;
 	font-size: 18pt;
 	color: white;
